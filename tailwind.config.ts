@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,7 +62,16 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				// Neo-brutalism colors
+				'neo-blue': '#3333ff',
+				'neo-pink': '#ff2d55',
+				'neo-green': '#33cc33',
+				'neo-yellow': '#ffcc00',
+				'neo-red': '#ff3b30',
+				'neo-purple': '#cc66ff',
+				'neo-orange': '#ff9500',
+				'neo-black': '#111111',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,12 +94,22 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'wiggle': {
+					'0%, 100%': { transform: 'rotate(-1deg)' },
+					'50%': { transform: 'rotate(1deg)' },
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
-			}
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'wiggle': 'wiggle 0.3s ease-in-out infinite'
+			},
+			boxShadow: {
+				'neo': '5px 5px 0px rgba(0, 0, 0, 0.9)',
+				'neo-sm': '3px 3px 0px rgba(0, 0, 0, 0.9)',
+				'neo-lg': '8px 8px 0px rgba(0, 0, 0, 0.9)',
+			},
 		}
 	},
 	plugins: [require("tailwindcss-animate")],
