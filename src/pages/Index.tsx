@@ -13,7 +13,7 @@ const Index = () => {
     {
       id: 'f1',
       title: 'Introduction to Psychology',
-      content: 'Key concepts from the first lecture: Freud's psychoanalytic theory, behavioral psychology, and cognitive approaches to understanding human behavior.',
+      content: 'Key concepts from the first lecture: Freud\'s psychoanalytic theory, behavioral psychology, and cognitive approaches to understanding human behavior.',
       color: 'blue',
       author: 'Prof. Smith',
       date: '2025-05-15',
