@@ -1,9 +1,11 @@
 
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Share2, MessageSquare, Trash2, Copy, BookText, GraduationCap, Folder } from 'lucide-react';
-import { toast } from 'sonner';
+import { Share2, MessageSquare, Trash2, Copy, BookText, GraduationCap, Folder, FileText } from 'lucide-react';
+import { toast } from '@/components/ui/use-toast';
 import { Note } from './NoteCard';
+import { useNoteFormatter } from '../hooks/useNoteFormatter';
+import FormattedNoteContent from './FormattedNoteContent';
 
 const getCardColorClass = (color: string) => {
   const colorMap: { [key: string]: string } = {
@@ -48,15 +50,24 @@ const NoteDetail = () => {
     year: 'numeric'
   });
 
+  // Use our formatter hook
+  const formattedContent = useNoteFormatter(note.content);
+
   const handleShare = () => {
     navigator.clipboard.writeText(window.location.href);
-    toast.success('Link copied to clipboard! Share with your study group.');
+    toast({
+      title: "Link copied!",
+      description: "Share with your study group.",
+    });
   };
 
   const handleDelete = () => {
     const updatedNotes = notes.filter((n: Note) => n.id !== id);
     localStorage.setItem('notes', JSON.stringify(updatedNotes));
-    toast.success('Note deleted!');
+    toast({
+      title: "Note deleted!",
+      variant: "destructive"
+    });
     navigate('/notes');
   };
 
@@ -69,7 +80,10 @@ const NoteDetail = () => {
     };
     
     localStorage.setItem('notes', JSON.stringify([newNote, ...notes]));
-    toast.success('Note duplicated!');
+    toast({
+      title: "Note duplicated!",
+      description: "You can now edit the copy."
+    });
     navigate(`/notes/${newNote.id}`);
   };
 
@@ -77,16 +91,11 @@ const NoteDetail = () => {
     e.preventDefault();
     if (!comment.trim()) return;
     
-    toast.success('Comment added! Your classmates will see it soon.');
+    toast({
+      title: "Comment added!",
+      description: "Your classmates will see it soon."
+    });
     setComment('');
-  };
-
-  const renderContentWithFormatting = (content: string) => {
-    // Very basic formatting - in a real app you'd use a proper Markdown renderer
-    const paragraphs = content.split('\n\n');
-    return paragraphs.map((paragraph, i) => (
-      <p key={i} className="mb-4">{paragraph}</p>
-    ));
   };
 
   return (
@@ -107,8 +116,31 @@ const NoteDetail = () => {
         </div>
         
         <div className="mb-8 whitespace-pre-wrap text-lg">
-          {renderContentWithFormatting(note.content)}
+          <FormattedNoteContent segments={formattedContent} />
         </div>
+        
+        {note.attachments && note.attachments.length > 0 && (
+          <div className="mb-8 pt-4 border-t-2 border-black">
+            <h3 className="font-bold flex items-center mb-3">
+              <FileText size={18} className="mr-2" />
+              Attachments
+            </h3>
+            <div className="flex flex-wrap gap-3">
+              {note.attachments.map((attachment: any, index: number) => (
+                <a 
+                  key={index}
+                  href={attachment.url} 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="neo-border bg-white text-black px-3 py-2 flex items-center"
+                >
+                  <FileText size={16} className="mr-2" />
+                  {attachment.name}
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
         
         <div className="flex justify-between items-center pt-4 border-t-2 border-black">
           <div>
