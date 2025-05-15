@@ -72,6 +72,15 @@ export default {
 				'neo-purple': '#cc66ff',
 				'neo-orange': '#ff9500',
 				'neo-black': '#111111',
+				// College subject colors
+				'math': '#3333ff',      // Blue for math/science
+				'literature': '#cc66ff', // Purple for literature/arts
+				'science': '#33cc33',    // Green for natural sciences
+				'history': '#ff9500',    // Orange for history/social sciences
+				'cs': '#ff2d55',         // Pink for computer science
+				'psychology': '#ffcc00',  // Yellow for psychology
+				'highlight': '#fff5b8',   // Highlight color for important notes
+				'formula-bg': '#f0f7ff',  // Background for formulas
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -98,17 +107,57 @@ export default {
 				'wiggle': {
 					'0%, 100%': { transform: 'rotate(-1deg)' },
 					'50%': { transform: 'rotate(1deg)' },
+				},
+				'bounce-subtle': {
+					'0%, 100%': { transform: 'translateY(0)' },
+					'50%': { transform: 'translateY(-5px)' },
+				},
+				'highlight-pulse': {
+					'0%, 100%': { backgroundColor: 'rgba(255, 204, 0, 0.2)' },
+					'50%': { backgroundColor: 'rgba(255, 204, 0, 0.5)' },
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'wiggle': 'wiggle 0.3s ease-in-out infinite'
+				'wiggle': 'wiggle 0.3s ease-in-out infinite',
+				'bounce-subtle': 'bounce-subtle 2s ease-in-out infinite',
+				'highlight-pulse': 'highlight-pulse 2s ease-in-out infinite'
 			},
 			boxShadow: {
 				'neo': '5px 5px 0px rgba(0, 0, 0, 0.9)',
 				'neo-sm': '3px 3px 0px rgba(0, 0, 0, 0.9)',
 				'neo-lg': '8px 8px 0px rgba(0, 0, 0, 0.9)',
+				'neo-hover': '7px 7px 0px rgba(0, 0, 0, 0.9)',
+				'neo-inner': 'inset 3px 3px 0px rgba(0, 0, 0, 0.2)',
+			},
+			typography: {
+				DEFAULT: {
+					css: {
+						h1: {
+							fontWeight: '700',
+						},
+						h2: {
+							fontWeight: '700',
+						},
+						h3: {
+							fontWeight: '600',
+						},
+						'blockquote': {
+							borderLeftWidth: '4px',
+							borderLeftColor: '#3333ff',
+							fontStyle: 'normal',
+							padding: '1rem 0 1rem 1.5rem',
+							backgroundColor: '#f9f9f9',
+						},
+						'code': {
+							fontFamily: 'Space Mono, monospace',
+							backgroundColor: '#f3f3f3',
+							padding: '0.2em 0.4em',
+							borderRadius: '0.25rem',
+						},
+					},
+				},
 			},
 		}
 	},

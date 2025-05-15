@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { BookOpen, Plus, Search, User } from 'lucide-react';
+import { BookOpen, Plus, Search, User, GraduationCap, BookText } from 'lucide-react';
 
 const Navbar = () => {
   return (
@@ -10,14 +10,14 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <BookOpen size={28} className="text-neo-blue" />
-            <span className="font-bold text-xl">Neo Notes</span>
+            <GraduationCap size={28} className="text-neo-blue" />
+            <span className="font-bold text-xl">CollegeNotes</span>
           </Link>
           
           {/* Navigation Links */}
           <div className="hidden md:flex items-center space-x-6">
             <Link to="/" className="font-bold hover:text-neo-blue">Home</Link>
-            <Link to="/notes" className="font-bold hover:text-neo-blue">Notes</Link>
+            <Link to="/notes" className="font-bold hover:text-neo-blue">My Notes</Link>
             <Link to="/explore" className="font-bold hover:text-neo-blue">Explore</Link>
           </div>
           

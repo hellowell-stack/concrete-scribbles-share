@@ -87,14 +87,49 @@
     @apply bg-background text-foreground;
     font-family: 'Space Grotesk', sans-serif;
   }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply tracking-tight;
+  }
 }
 
+/* Neo Brutalism Styles */
 .neo-border {
   @apply border-4 border-black;
 }
 
 .neo-card {
   @apply bg-white neo-border shadow-neo transition-all duration-200 hover:-translate-y-1;
+}
+
+/* College Notes specific styles */
+.note-highlight {
+  @apply bg-yellow-200 px-1 py-0.5 rounded-sm;
+}
+
+.formula {
+  @apply font-mono bg-gray-100 px-3 py-2 my-2 block text-center neo-border border-2;
+}
+
+.definition {
+  @apply italic border-l-4 border-neo-blue pl-3 py-1;
+}
+
+/* Animation for attention */
+@keyframes pulse-border {
+  0% {
+    box-shadow: 0 0 0 0 rgba(51, 51, 255, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(51, 51, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(51, 51, 255, 0);
+  }
+}
+
+.pulse-border {
+  animation: pulse-border 2s infinite;
 }
 
 @layer components {
@@ -125,5 +160,41 @@
 
   .neo-textarea {
     @apply neo-input w-full min-h-[120px] resize-none;
+  }
+  
+  /* College Notes Specific Components */
+  .subject-tag {
+    @apply inline-flex items-center bg-neo-blue text-white text-sm px-3 py-1 neo-border border-2;
+  }
+  
+  .note-title {
+    @apply text-2xl font-bold mb-4 flex items-center;
+  }
+  
+  .note-section {
+    @apply border-l-4 border-neo-blue pl-4 my-4;
+  }
+  
+  .study-tip {
+    @apply bg-neo-yellow p-4 neo-border my-4;
+  }
+}
+
+@layer utilities {
+  /* College Notes Utilities */
+  .highlight-yellow {
+    @apply bg-yellow-200 px-1;
+  }
+  
+  .highlight-blue {
+    @apply bg-blue-200 px-1;
+  }
+  
+  .highlight-green {
+    @apply bg-green-200 px-1;
+  }
+  
+  .highlight-pink {
+    @apply bg-pink-200 px-1;
   }
 }

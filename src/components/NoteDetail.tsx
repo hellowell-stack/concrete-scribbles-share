@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Share2, MessageSquare, Trash2, Copy } from 'lucide-react';
+import { Share2, MessageSquare, Trash2, Copy, BookText, GraduationCap, Folder } from 'lucide-react';
 import { toast } from 'sonner';
 import { Note } from './NoteCard';
 
@@ -31,28 +31,33 @@ const NoteDetail = () => {
       <div className="text-center py-10">
         <h2 className="text-2xl font-bold mb-4">Note not found</h2>
         <button 
-          onClick={() => navigate('/')}
+          onClick={() => navigate('/notes')}
           className="neo-button"
         >
-          Back to Home
+          Back to Notes
         </button>
       </div>
     );
   }
 
   const colorClass = getCardColorClass(note.color);
+  const formattedDate = new Date(note.date).toLocaleDateString('en-US', {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric'
+  });
 
   const handleShare = () => {
-    // In a real app, this would generate a sharing link
     navigator.clipboard.writeText(window.location.href);
-    toast.success('Link copied to clipboard!');
+    toast.success('Link copied to clipboard! Share with your study group.');
   };
 
   const handleDelete = () => {
     const updatedNotes = notes.filter((n: Note) => n.id !== id);
     localStorage.setItem('notes', JSON.stringify(updatedNotes));
     toast.success('Note deleted!');
-    navigate('/');
+    navigate('/notes');
   };
 
   const handleDuplicate = () => {
@@ -72,40 +77,62 @@ const NoteDetail = () => {
     e.preventDefault();
     if (!comment.trim()) return;
     
-    toast.success('Comment added!');
+    toast.success('Comment added! Your classmates will see it soon.');
     setComment('');
-    // In a real app, this would save the comment to a database
+  };
+
+  const renderContentWithFormatting = (content: string) => {
+    // Very basic formatting - in a real app you'd use a proper Markdown renderer
+    const paragraphs = content.split('\n\n');
+    return paragraphs.map((paragraph, i) => (
+      <p key={i} className="mb-4">{paragraph}</p>
+    ));
   };
 
   return (
-    <div className="max-w-3xl mx-auto">
-      <div className={`neo-card ${colorClass} p-6 mb-8`}>
-        <h1 className="text-3xl font-bold mb-4">{note.title}</h1>
-        <div className="mb-6 whitespace-pre-wrap">{note.content}</div>
+    <div className="max-w-4xl mx-auto">
+      <div className={`neo-card ${colorClass} p-8 mb-8 relative`}>
+        {note.subject && (
+          <div className="inline-block bg-white text-black py-1 px-3 neo-border text-sm font-bold absolute right-8 top-8">
+            <div className="flex items-center">
+              <Folder size={16} className="mr-1" />
+              {note.subject}
+            </div>
+          </div>
+        )}
+        
+        <div className="flex items-start mb-4">
+          <BookText size={32} className="mr-3 flex-shrink-0" />
+          <h1 className="text-4xl font-bold">{note.title}</h1>
+        </div>
+        
+        <div className="mb-8 whitespace-pre-wrap text-lg">
+          {renderContentWithFormatting(note.content)}
+        </div>
         
         <div className="flex justify-between items-center pt-4 border-t-2 border-black">
           <div>
-            <p className="font-bold">{note.author}</p>
-            <p className="text-sm">{new Date(note.date).toLocaleDateString()}</p>
+            <p className="font-bold text-lg">{note.author}</p>
+            <p className="text-sm">{formattedDate}</p>
           </div>
           <div className="flex space-x-3">
             <button 
               onClick={handleShare}
-              className="flex items-center px-3 py-2 neo-border shadow-neo-sm bg-white text-black"
+              className="flex items-center px-4 py-2 neo-border shadow-neo-sm bg-white text-black"
             >
               <Share2 size={16} className="mr-2" />
               <span>Share</span>
             </button>
             <button 
               onClick={handleDuplicate}
-              className="flex items-center px-3 py-2 neo-border shadow-neo-sm bg-white text-black"
+              className="flex items-center px-4 py-2 neo-border shadow-neo-sm bg-white text-black"
             >
               <Copy size={16} className="mr-2" />
               <span>Duplicate</span>
             </button>
             <button 
               onClick={handleDelete}
-              className="flex items-center px-3 py-2 neo-border shadow-neo-sm bg-white text-black"
+              className="flex items-center px-4 py-2 neo-border shadow-neo-sm bg-white text-black"
             >
               <Trash2 size={16} className="mr-2" />
               <span>Delete</span>
@@ -114,18 +141,32 @@ const NoteDetail = () => {
         </div>
       </div>
       
+      {/* Study Tips Section */}
+      <div className="mb-8 neo-card bg-neo-yellow p-6">
+        <h3 className="text-xl font-bold flex items-center mb-3">
+          <GraduationCap className="mr-2" />
+          <span>Study Tips</span>
+        </h3>
+        <ul className="list-disc pl-5 space-y-2">
+          <li>Review these notes within 24 hours of the lecture to improve retention</li>
+          <li>Create flashcards for key concepts and definitions</li>
+          <li>Explain the material to a classmate to check your understanding</li>
+          <li>Connect these concepts with previous lessons</li>
+        </ul>
+      </div>
+      
       {/* Comments Section */}
       <div className="mt-8">
         <h3 className="text-xl font-bold flex items-center mb-4">
           <MessageSquare className="mr-2" />
-          <span>Comments</span>
+          <span>Discussion & Questions</span>
         </h3>
         
         <form onSubmit={handleSubmitComment} className="mb-6">
           <textarea
             value={comment}
             onChange={(e) => setComment(e.target.value)}
-            placeholder="Write a comment..."
+            placeholder="Ask a question or add a comment about these notes..."
             className="neo-textarea w-full mb-3"
             rows={3}
           />
@@ -141,10 +182,9 @@ const NoteDetail = () => {
         </form>
         
         <div className="space-y-4">
-          {/* This would normally show real comments, but for demo we'll show a placeholder */}
-          <div className="py-6 text-center text-gray-500">
-            <p className="font-medium">No comments yet</p>
-            <p className="text-sm">Be the first to share your thoughts!</p>
+          <div className="py-6 text-center bg-gray-50 neo-border">
+            <p className="font-medium">No questions yet</p>
+            <p className="text-sm">Be the first to ask a question about these notes!</p>
           </div>
         </div>
       </div>
